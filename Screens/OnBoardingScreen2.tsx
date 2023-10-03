@@ -2,117 +2,50 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
+  ScrollView,
   TouchableOpacity,
-  Button,
 } from 'react-native';
 import {useState} from 'react';
 
 function OnBoardingScreen2() {
-  const [selectedItemIndices, setSelectedItemIndices] = useState([]);
-  const [numColumns, setNumColumns] = useState(2);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const data = [
-    {
-      id: '1',
-      item: 'Stories',
-    },
-    {
-      id: '2',
-      item: 'Article',
-    },
-    {
-      id: '3',
-      item: 'ST Reels',
-    },
-    {
-      id: '4',
-      item: 'Soundboard',
-    },
-    {
-      id: '5',
-      item: 'Tweets',
-    },
-    {
-      id: '6',
-      item: 'Magzines',
-    },
-    {
-      id: '7',
-      item: 'Videos',
-    },
-    {
-      id: '8',
-      item: 'Lives',
-    },
-    {
-      id: '9',
-      item: 'Stories',
-    },
-    {
-      id: '10',
-      item: 'Polls',
-    },
-    {
-      id: '11',
-      item: 'Quiz',
-    },
-    {
-      id: '12',
-      item: 'Infographics',
-    },
-    {
-      id: '13',
-      item: 'Survey',
-    },
-    {
-      id: '14',
-      item: 'Launches',
-    },
-    {
-      id: '15',
-      item: 'Travels',
-    },
-    {
-      id: '16',
-      item: 'Podcast',
-    },
-  ];
+    { id: 1, text: 'Stories' },
+    { id: 2, text: 'Article' },
+    { id: 3, text: 'ST Reels' },
+    { id: 4, text: 'Soundbg' },
+    { id: 5, text: 'Tweets' },
+    { id: 6, text: 'Magzines' },
+    { id: 7, text: 'Videos' },
+    { id: 9, text: 'Lives' },
+    { id: 10, text: 'Stories' },
+    { id: 11, text: 'Polls' },
+    { id: 12, text: 'Quiz' },
+    { id: 13, text: 'Infographics' },
+    { id: 14, text: 'Surveys' },
+    { id: 15, text: 'Launches' },
+    { id: 16, text: 'Travels' },
+    { id: 17, text: 'Podcast' },
+];
 
-  const toggleItemSelection = index => {
-    // Check if the item is already selected, and toggle its selection
-    if (selectedItemIndices.includes(index)) {
-      setSelectedItemIndices(selectedItemIndices.filter(i => i !== index));
-    } else {
-      setSelectedItemIndices([...selectedItemIndices, index]);
+  const toggleItem = (itemId) => {
+    if(selectedItems.includes(itemId)) {
+        setSelectedItems(selectedItems.filter((id) => id !== itemId));
+    }else {
+        setSelectedItems([...selectedItems, itemId]);
     }
   };
 
-  const renderItem = ({item, index}) => {
-    const isSelected = selectedItemIndices.includes(index);
-    return (
-      <View>
-        <TouchableOpacity
-          onPress={() => toggleItemSelection(index)}
-          style={[
-            styles.itemContainer,
-            isSelected ? styles.selectedItem : styles.unselectedItem,
-          ]}>
-          <Text
-            style={[
-              // styles.textItem,
-              isSelected ? styles.selectedText : styles.unselectedText,
-            ]}>
-            {item.item}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+ 
+  const handleLogSelectedItems = () => {
+    const selectedItemsText = selectedItems.map((itemId) => {
+        const selectedItem = data.find((item) => item.id === itemId);
+        return selectedItem ? selectedItem.text : null;
+    });
 
-  const ConsoleSelectedItemsHandler = () => {
-    const selectedItems = selectedItemIndices.map(index => data[index].item);
-    console.log('Selected Items: ', selectedItems);
+      console.log('Selected Items: ', selectedItemsText);
+    
   };
 
   return (
@@ -120,31 +53,39 @@ function OnBoardingScreen2() {
       <Text style={styles.text}>
         Choose the content that you are interested.
       </Text>
+
       <View style={styles.flatListItem}>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          // horizontal
-          // showsHorizontalScrollIndicator={false}
-          numColumns={numColumns}
-        />
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        {data.map((item) => (
+        <TouchableOpacity
+          key={item.id}
+          onPress={() => toggleItem(item.id)}
+          style={[
+            styles.item,
+            // isSelected ? styles.selectedItem : styles.unselectedItem,
+            {backgroundColor: selectedItems.includes(item.id) ? 'black' : 'white' },
+          ]}>
+          <Text
+            style={[
+              // styles.textItem,
+              // isSelected ? styles.selectedText : styles.unselectedText,
+              {color: selectedItems.includes(item.id) ? 'white' : 'black', 
+              fontWeight: selectedItems.includes(item.id) ? 'bold' : 'normal',}
+            ]}>
+            {item.text}
+          </Text>
+        </TouchableOpacity>
+      ))}
+      </ScrollView>
       </View>
-      <View style={{flexDirection: 'row', marginLeft: 32}}>
+      <View style={{flexDirection: 'row', marginLeft: 23}}>
         <View style={styles.circle1}></View>
         <View style={styles.circle1}></View>
         <View style={styles.circle2}></View>
         <View style={styles.button}>
-          <TouchableOpacity onPress={ConsoleSelectedItemsHandler}>
-            <Text style={styles.buttonText}>
-              Get Started <Text style={{fontWeight: 'bold'}}>-&rarr;</Text>
-            </Text>
+          <TouchableOpacity onPress={handleLogSelectedItems}>
+            <Text style={styles.buttonText}>Get Started &rarr;</Text>
           </TouchableOpacity>
-          {/* <Button
-          title="Get Started &rarr;"
-          onPress={ConsoleSelectedItemsHandler}
-          color="#2a149a"
-        /> */}
         </View>
       </View>
     </View>
@@ -155,10 +96,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  flatListItem: {
-    flex: 0.7,
-    marginLeft: 28,
-  },
   text: {
     flex: 0.27,
     color: '#572AC2',
@@ -167,32 +104,24 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginLeft: 32,
   },
-  item: {
-    color: 'black',
-    fontSize: 20,
+  flatListItem: {
+    flex: 0.7,
+    marginLeft: 28,
   },
-  itemContainer: {
+  scrollViewContent: {
+    width: 350,
+    flexWrap:'wrap',
+    flexDirection: 'row',
+  },
+  item: {
     paddingVertical: 12,
     paddingHorizontal: 30,
-    // marginHorizontal: 10,
     margin: 10,
     borderWidth: 1,
     borderColor: '#000',
     borderRadius: 5,
-    // marginBottom: 15,
-  },
-  selectedItem: {
-    backgroundColor: '#000',
-  },
-  selectedText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  unselectedText: {
-    color: 'black',
-  },
-  unselectedItem: {
-    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     width: 156,
@@ -208,7 +137,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: '400',
-    // fontSize: 13,
   },
   circle1: {
     height: 10,
