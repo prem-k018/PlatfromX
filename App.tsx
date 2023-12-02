@@ -9,11 +9,14 @@ import React from 'react';
 import AppNavigator from './AppNavigator';
 
 import {StatusBar, StyleSheet} from 'react-native';
+import Login from './Screens/Login';
+import Carousel from './Screens/Carousel';
 
 function App(): JSX.Element {
   return (
     <>
       <AppNavigator />
+      {/* <Carousel /> */}
     </>
   );
 }

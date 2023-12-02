@@ -6,46 +6,45 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useState} from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 function OnBoardingScreen2() {
   const [selectedItems, setSelectedItems] = useState([]);
 
   const data = [
-    { id: 1, text: 'Stories' },
-    { id: 2, text: 'Article' },
-    { id: 3, text: 'ST Reels' },
-    { id: 4, text: 'Soundbg' },
-    { id: 5, text: 'Tweets' },
-    { id: 6, text: 'Magzines' },
-    { id: 7, text: 'Videos' },
-    { id: 9, text: 'Lives' },
-    { id: 10, text: 'Stories' },
-    { id: 11, text: 'Polls' },
-    { id: 12, text: 'Quiz' },
-    { id: 13, text: 'Infographics' },
-    { id: 14, text: 'Surveys' },
-    { id: 15, text: 'Launches' },
-    { id: 16, text: 'Travels' },
-    { id: 17, text: 'Podcast' },
-];
+    {id: 1, text: 'Stories'},
+    {id: 2, text: 'Article'},
+    {id: 3, text: 'ST Reels'},
+    {id: 4, text: 'Soundbg'},
+    {id: 5, text: 'Tweets'},
+    {id: 6, text: 'Magzines'},
+    {id: 7, text: 'Videos'},
+    {id: 9, text: 'Lives'},
+    {id: 10, text: 'Stories'},
+    {id: 11, text: 'Polls'},
+    {id: 12, text: 'Quiz'},
+    {id: 13, text: 'Infographics'},
+    {id: 14, text: 'Surveys'},
+    {id: 15, text: 'Launches'},
+    {id: 16, text: 'Travels'},
+    {id: 17, text: 'Podcast'},
+  ];
 
-  const toggleItem = (itemId) => {
-    if(selectedItems.includes(itemId)) {
-        setSelectedItems(selectedItems.filter((id) => id !== itemId));
-    }else {
-        setSelectedItems([...selectedItems, itemId]);
+  const toggleItem = itemId => {
+    if (selectedItems.includes(itemId)) {
+      setSelectedItems(selectedItems.filter(id => id !== itemId));
+    } else {
+      setSelectedItems([...selectedItems, itemId]);
     }
   };
 
- 
   const handleLogSelectedItems = () => {
-    const selectedItemsText = selectedItems.map((itemId) => {
-        const selectedItem = data.find((item) => item.id === itemId);
-        return selectedItem ? selectedItem.text : null;
+    const selectedItemsText = selectedItems.map(itemId => {
+      const selectedItem = data.find(item => item.id === itemId);
+      return selectedItem ? selectedItem.text : null;
     });
 
-      console.log('Selected Items: ', selectedItemsText);
-    
+    console.log('Selected Items: ', selectedItemsText);
   };
 
   return (
@@ -56,27 +55,35 @@ function OnBoardingScreen2() {
 
       <View style={styles.flatListItem}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        {data.map((item) => (
-        <TouchableOpacity
-          key={item.id}
-          onPress={() => toggleItem(item.id)}
-          style={[
-            styles.item,
-            // isSelected ? styles.selectedItem : styles.unselectedItem,
-            {backgroundColor: selectedItems.includes(item.id) ? 'black' : 'white' },
-          ]}>
-          <Text
-            style={[
-              // styles.textItem,
-              // isSelected ? styles.selectedText : styles.unselectedText,
-              {color: selectedItems.includes(item.id) ? 'white' : 'black', 
-              fontWeight: selectedItems.includes(item.id) ? 'bold' : 'normal',}
-            ]}>
-            {item.text}
-          </Text>
-        </TouchableOpacity>
-      ))}
-      </ScrollView>
+          {data.map(item => (
+            <TouchableOpacity
+              key={item.id}
+              onPress={() => toggleItem(item.id)}
+              style={[
+                styles.item,
+                // isSelected ? styles.selectedItem : styles.unselectedItem,
+                {
+                  backgroundColor: selectedItems.includes(item.id)
+                    ? 'black'
+                    : 'white',
+                },
+              ]}>
+              <Text
+                style={[
+                  // styles.textItem,
+                  // isSelected ? styles.selectedText : styles.unselectedText,
+                  {
+                    color: selectedItems.includes(item.id) ? 'white' : 'black',
+                    fontWeight: selectedItems.includes(item.id)
+                      ? 'bold'
+                      : 'normal',
+                  },
+                ]}>
+                {item.text}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
       <View style={{flexDirection: 'row', marginLeft: 23}}>
         <View style={styles.circle1}></View>
@@ -84,7 +91,16 @@ function OnBoardingScreen2() {
         <View style={styles.circle2}></View>
         <View style={styles.button}>
           <TouchableOpacity onPress={handleLogSelectedItems}>
-            <Text style={styles.buttonText}>Get Started &rarr;</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={styles.buttonText}>Get Started</Text>
+              <Text style={styles.buttonIcon}>
+                <Ionicons
+                  name="arrow-forward-outline"
+                  color={'#fff'}
+                  size={19}
+                />
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -110,7 +126,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     width: 350,
-    flexWrap:'wrap',
+    flexWrap: 'wrap',
     flexDirection: 'row',
   },
   item: {
@@ -129,14 +145,21 @@ const styles = StyleSheet.create({
     marginLeft: 110,
     marginTop: 10,
     backgroundColor: '#5F1EBE',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
     borderRadius: 5,
     gap: 12,
   },
   buttonText: {
     color: 'white',
-    fontWeight: '400',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    paddingLeft: 24,
+    paddingVertical: 12,
+  },
+  buttonIcon: {
+     flexShrink: 0,
+     paddingTop:12,
+     paddingLeft: 12,
   },
   circle1: {
     height: 10,
